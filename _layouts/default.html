@@ -39,6 +39,7 @@
       <div class="inner clearfix">
         <section id="main-content">
           {{ content }}
+          <div id="disqus_thread"></div>
         </section>
 
         <aside id="sidebar">
@@ -53,7 +54,6 @@
             </a>
           {% endif %}
         </aside>
-        <div id="disqus_thread"></div>
         <script>
             var disqus_config = function () {
                 this.page.url = {{ page.url }};  // Replace PAGE_URL with your page's canonical URL variable
