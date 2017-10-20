@@ -1,6 +1,5 @@
 ---
-layout: default
-title: "Rodolfo Grave"
+layout: page
 ---
 <ul>
     {% for post in site.posts %}
