@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            function translateFromLettersToNumbers() {
+                const lettersMessage = document.getElementById("lettersMessage").value;
+                const numbersTranslation = fromLettersToNumbers(lettersMessage);
+                document.getElementById("numbersTranslation").innerHTML = numbersTranslation;
+                return false;
+            }
+            function fromLettersToNumbers(message) {
+                var result = "";
+                for (let index = 0; index < message.length; index++) {
+                    const letter = message[index];
+                    result = result + getNumber(letter) + " ";
+                }
+                return result;
+            }
+            function getNumber(letter) {
+                switch (letter) {
+                    case 'a': return 1;
+                    case 'b': return 2;
+                    case ' ': return ' ';
+                }
+            }
+
+            function translateFromNumbersToLetters() {
+                const numbersMessage = document.getElementById("numbersMessage").value;
+                const lettersTranslation = fromNumbersToLetters(numbersMessage);
+                document.getElementById("lettersTranslation").innerHTML = lettersTranslation;
+                return false;
+            }
+            function fromNumbersToLetters(message) {
+                var result = "";
+                for (let index = 0; index < message.length; index++) {
+                    const number = message[index];
+                    result = result + getLetter(number);
+                }
+                return result;
+            }
+            function getLetter(number) {
+                switch (number) {
+                    case '1': return 'a';
+                    case '2': return 'b';
+                    case ' ': return ' ';
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div>
+        <div style="width: 45%; float: left;">
+            <form onsubmit="return translateFromLettersToNumbers();">
+                <label>Letters message:</label>
+                <textarea id="lettersMessage" cols="40" rows="10" /></textarea>
+                <input type="submit" value="Translate"/>
+            </form>
+            <span id="numbersTranslation"></span>
+        </div>
+        <div style="width: 45%; float: right">
+                <form onsubmit="return translateFromNumbersToLetters();">
+                    <label>Numbers message:</label>
+                    <textarea id="numbersMessage" cols="40" rows="10"></textarea>
+                    <input type="submit" value="Translate"/>
+                </form>
+                <span id="lettersTranslation"></span>
+            </div>
+        </div>
+</body>
+</html>
