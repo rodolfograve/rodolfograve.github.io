@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sophie's Noughts and Crosses</title>
+		<style>
+			.row div {
+				padding: 10px;
+				border: 1px solid black;
+				float: left;
+				height: 50px;
+				width: 50px;
+			}
+			.row {
+				clear: both;
+			}
+			
+			#winnerDiv, #tieDiv {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="turnDiv">
+			It is <span id="currentPlayerSpan"></span>'s turn.
+		</div>
+		<div id="winnerDiv">
+			Sophie <span id="winnerSpan"></span> won!
+		</div>
+		<div id="tieDiv">
+			It is a tie!
+		</div>
+		<div>
+			<div class="row">
+				<div id="0_0" onclick="place(this)"></div>
+				<div id="1_0" onclick="place(this)"></div>
+				<div id="2_0" onclick="place(this)"></div>
+			</div>
+			<div class="row">
+				<div id="0_1" onclick="place(this)"></div>
+				<div id="1_1" onclick="place(this)"></div>
+				<div id="2_1" onclick="place(this)"></div>
+			</div>
+			<div class="row">
+				<div id="0_2" onclick="place(this)"></div>
+				<div id="1_2" onclick="place(this)"></div>
+				<div id="2_2" onclick="place(this)"></div>
+			</div>
+		</div>
+		<script>
+			var currentPlayer = "O";
+			var winner = "";
+			
+			function place(box) {
+				if (box.innerText != "" || winner != "") {
+					return;
+				}
+				
+				box.innerText = currentPlayer;
+				if (currentPlayer == "O") {
+					currentPlayer = "X";
+				}
+				else {
+					currentPlayer = "O";
+				}
+				document.getElementById("currentPlayerSpan").innerText = currentPlayer;
+				check();
+			}
+			
+			function check() {
+				var box00 = document.getElementById("0_0").innerText;
+				var box10 = document.getElementById("1_0").innerText;
+				var box20 = document.getElementById("2_0").innerText;
+				var box01 = document.getElementById("0_1").innerText;
+				var box11 = document.getElementById("1_1").innerText;
+				var box21 = document.getElementById("2_1").innerText;
+				var box02 = document.getElementById("0_2").innerText;
+				var box12 = document.getElementById("1_2").innerText;
+				var box22 = document.getElementById("2_2").innerText;
+				
+				if (box00 == box10 && box10 == box20 && box00 != "") {
+					notifyWin(box00);
+				}
+				else if (box01 == box11 && box11 == box21 && box01 != "") {
+					notifyWin(box01);
+				}
+				else if (box02 == box12 && box12 == box22 && box02 != "") {
+					notifyWin(box02);
+				}
+				else if (box00 == box01 && box01 == box02 && box00 != "") {
+					notifyWin(box00);
+				}
+				else if (box10 == box11 && box11 == box12 && box10 != "") {
+					notifyWin(box10);
+				}
+				else if (box20 == box21 && box21 == box22 && box20 != "") {
+					notifyWin(box20);
+				}
+				else if (box00 == box11 && box11 == box22 && box00 != "") {
+					notifyWin(box00);
+				}
+				else if (box20 == box11 && box11 == box02 && box20 != "") {
+					notifyWin(box20);
+				}
+				else if (box00 != "" && box01 != "" && box02 != "" && box10 != "" && box11 != "" && box12 != "" && box20 != "" && box21 != "" && box22 != "") {
+					notifyTie();
+				}
+			}
+			
+			function notifyWin(w){
+				winner = w;
+				document.getElementById("turnDiv").setAttribute("style", "display: none");
+				document.getElementById("winnerSpan").innerText = w;
+				document.getElementById("winnerDiv").setAttribute("style", "display: block");
+			}
+			
+			function notifyTie() {
+				document.getElementById("turnDiv").setAttribute("style", "display: none");
+				document.getElementById("tieDiv").setAttribute("style", "display: block");
+			}
+
+			document.getElementById("currentPlayerSpan").innerText = currentPlayer;
+		</script>
+	</body>
+</html>

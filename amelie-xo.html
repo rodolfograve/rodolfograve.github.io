@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Noughts and Crosses</title>
+		<style>
+			.row div {
+				padding: 10px;
+				border: 10px solid red;
+				height: 30px;
+				width: 30px;
+				float: left;
+			}
+			.row {
+				clear: both;
+			}
+			
+			#winnerDiv {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="playerTurnDiv">
+			It is player <span id="currentPlayerSpan"></span>'s turn.
+		</div>
+		<div id="winnerDiv">
+			Disgusting poo poo mummy <span id="winnerSpan"></span> has WON!
+		</div>
+		<div>
+			<div class="row">
+				<div id="0x0" onclick="place(this)"></div>
+				<div id="1x0" onclick="place(this)"></div>
+				<div id="2x0" onclick="place(this)"></div>
+			</div>
+			<div class="row">
+				<div id="0x1" onclick="place(this)"></div>
+				<div id="1x1" onclick="place(this)"></div>
+				<div id="2x1" onclick="place(this)"></div>
+			</div>
+			<div class="row">
+				<div id="0x2" onclick="place(this)"></div>
+				<div id="1x2" onclick="place(this)"></div>
+				<div id="2x2" onclick="place(this)"></div>
+			</div>
+		</div>
+		<script>
+			var bucket = "poo poo";
+			var mouth = "poo poo";
+			var pi = 3.1415926;
+			var currentPlayer = "O";
+			var theWinner = "";
+			document.getElementById("currentPlayerSpan").innerText = currentPlayer;
+
+			function place(div) {
+				if (div.innerText != "" || theWinner != "") {
+					return;
+				}
+				div.innerText = currentPlayer;
+				if (currentPlayer == "O") {
+					currentPlayer = "X";
+				}
+				else {
+					currentPlayer = "O";
+				}
+				checkGameBoard();
+				document.getElementById("currentPlayerSpan").innerText = currentPlayer;
+			}
+			
+			function checkGameBoard() {
+				var div00 = document.getElementById("0x0").innerText;
+				var div10 = document.getElementById("1x0").innerText;
+				var div20 = document.getElementById("2x0").innerText;
+				var div01 = document.getElementById("0x1").innerText;
+				var div11 = document.getElementById("1x1").innerText;
+				var div21 = document.getElementById("2x1").innerText;
+				var div02 = document.getElementById("0x2").innerText;
+				var div12 = document.getElementById("1x2").innerText;
+				var div22 = document.getElementById("2x2").innerText;
+				
+				if (div00 == div10 && div10 == div20 && div00 != "") {
+					notifyWin(div00);
+				}
+				if (div01 == div11 && div11 == div21 && div01 != "") {
+					notifyWin(div01);
+				}
+				if (div02 == div12 && div12 == div22 && div02 != "") {
+					notifyWin(div02);
+				}
+				if (div00 == div01 && div01 == div02 && div00 != "") {
+					notifyWin(div00);
+				}
+				if (div10 == div11 && div11 == div12 && div10 != "") {
+					notifyWin(div10);
+				}
+				if (div20 == div21 && div21 == div22 && div20 != "") {
+					notifyWin(div20);
+				}
+				if (div00 == div11 && div11 == div22 && div00 != "") {
+					notifyWin(div00);
+				}
+				if (div20 == div11 && div11 == div02 && div20 != "") {
+					notifyWin(div20);
+				}
+			}
+			
+			function notifyWin(winner) {
+				theWinner = winner;
+				document.getElementById("winnerSpan").innerText = winner;
+				document.getElementById("winnerDiv").setAttribute("style", "display: block");
+				document.getElementById("playerTurnDiv").setAttribute("style", "display: none");
+			}
+			
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

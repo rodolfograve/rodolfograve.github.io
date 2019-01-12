@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sophie's Snake</title>
+		<style>
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="600" height="600"></canvas>
+		
+		<script>
+			var game = {
+				canvas: document.getElementById("canvas"),
+				ctx: canvas.getContext("2d"),
+				board: [
+					"###############",
+					"#             #",
+					"#             #",
+					"#             #",
+					"#             #",
+					"#             #",
+					"#             #",
+					"#    ####     #",
+					"#    ####     #",
+					"#             #",
+					"#             #",
+					"#             #",
+					"#             #",
+					"#             #",
+					"#             #",
+					"###############"
+					],
+				squareSize: 30,
+				drawBoard: function () {
+					var currentYoffset = 0;
+					game.board.forEach(x => {
+						const split = x.split("");
+						var currentXoffset = 0;
+						split.forEach(c => {
+							if (c == "#"){
+								game.ctx.fillStyle = "black";
+								game.ctx.fillRect(currentXoffset, currentYoffset, game.squareSize, game.squareSize);
+							}
+							currentXoffset += game.squareSize;
+						});
+						currentYoffset += game.squareSize;
+					});
+				},
+				draw: function () {
+					game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+					game.drawBoard();
+					game.snake.draw();
+				},
+				tickNumber: 0,
+				timer: null,
+				tick: function() {
+					window.clearTimeout(game.timer);
+					game.tickNumber++;
+					game.snake.move();
+					game.draw();
+					game.timer = window.setTimeout("game.tick()", 500);
+				},
+				start: function() {
+					window.addEventListener("keydown", game.processInput, false);
+					game.tick();
+				},
+				processInput: function(e) {
+					var key = e.keyCode;
+					var result = game.snake.facing;
+					if (key == '37') result = "W";
+					if (key == '38') result = "N";
+					if (key == '39') result = "E";
+					if (key == '40') result = "S";
+					game.snake.facing = result;
+					game.tick();
+				},
+				snake: {
+					parts: [
+						{x: 4, y: 2},
+						{x: 3, y: 2},
+						{x: 2, y: 2},
+					],
+					facing: 'E',
+					nextLocation: function(){
+						var head = game.snake.parts[0];
+						var targetX = head.x;
+						var targetY = head.y;
+						targetY = game.snake.facing == "N" ? targetY-1 : targetY;
+						targetY = game.snake.facing == "S" ? targetY+1 : targetY;
+						targetX = game.snake.facing == "W" ? targetX-1 : targetX;
+						targetX = game.snake.facing == "E" ? targetX+1 : targetX;
+						return {x: targetX, y: targetY};
+					},
+					move: function() {
+						var location = game.snake.nextLocation();
+						game.snake.parts.unshift(location);
+						game.snake.parts.pop();
+					},
+					draw: function () {
+						game.snake.parts.forEach(part => {
+							const partXlocation = part.x * game.squareSize;
+							const partYlocation = part.y * game.squareSize;
+							game.ctx.fillStyle = "green";
+							game.ctx.fillRect(partXlocation, partYlocation, game.squareSize, game.squareSize);
+						});
+					}
+				},
+			}
+			
+			game.start();
+		</script>
+	</body>
+</html>
