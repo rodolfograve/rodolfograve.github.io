@@ -12,6 +12,7 @@
                     this.y = y;
                     this.width = width;
                     this.height = height;
+                    this.speed = 5;
                 }
 
                 render(ctx) {
@@ -23,6 +24,50 @@
                     return ball.x > this.x && ball.x < this.x + this.width;
                 }
 
+                moveUp() {
+                    this.y -= this.speed;
+                }
+                moveDown() {
+                    this.y += this.speed;
+                }
+            }
+            class Keys {
+                constructor() {
+                    this.up = false;
+                    this.down = false;
+                }
+
+                processKeyDown(keyCode) {
+                    this.up = keyCode == 38;
+                    this.down = keyCode == 40;
+                }
+
+                processKeyUp(keyCode) {
+                    if (this.up && keyCode == 38) {
+                        this.up = false;
+                    }
+                    else if (this.down && keyCode == 40) {
+                        this.down = false;
+                    }
+                }
+            }
+            class HumanPlayer {
+                constructor(paddle) {
+                    this.paddle = paddle;
+                }
+                update(keys) {
+                    if (keys.down) {
+                        this.paddle.moveDown();
+                    } else if (keys.up) {
+                        this.paddle.moveUp();
+                    }
+                }
+                hasHitBall(ball) {
+                    return this.paddle.hasHitBall(ball);
+                }
+                render(ctx) {
+                    this.paddle.render(ctx);
+                }
             }
             class Speed {
                 constructor(x, y) {
@@ -72,9 +117,11 @@
                     this.paddleWidth = 20;
                     this.paddleHeight = 100;
 
-                    this.player = new Paddle(5, 200, this.paddleWidth, this.paddleHeight);
+                    this.player = new HumanPlayer(new Paddle(5, 200, this.paddleWidth, this.paddleHeight));
                     this.ai = new Paddle(this.width - this.paddleWidth - 5, 200, this.paddleWidth, this.paddleHeight);
                     this.ball = new Ball(this.width / 2, this.height / 2, this.paddleWidth, this.paddleHeight);
+
+                    this.keys = new Keys();
                 }
 
                 tick() {
@@ -84,7 +131,7 @@
                 }
                 update() {
                     this.ball.update(this.player, this.ai);
-                    // player.update();
+                    this.player.update(this.keys);
                     // ai.update();    
                 }
                 draw() {
@@ -95,6 +142,8 @@
                     this.ball.render(ctx);
                 }
                 start() {
+                    window.addEventListener("keydown", function(e) { game.keys.processKeyDown(e.keyCode) });
+                    window.addEventListener("keyup", function(e) { game.keys.processKeyUp(e.keyCode) });
                     this.tick();
                 }
             }
