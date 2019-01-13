@@ -21,11 +21,13 @@
                 }
 
                 hasHitBall(ball) {
-                    return ball.x > this.x && ball.x < this.x + this.width;
+                    return ball.x > this.x && ball.x < this.x + this.width && ball.y > this.y && ball.y < this.y + this.height;
                 }
 
                 moveUp() {
-                    this.y -= this.speed;
+                    if (this.y > this.speed) {
+                        this.y -= this.speed;
+                    }
                 }
                 moveDown() {
                     this.y += this.speed;
