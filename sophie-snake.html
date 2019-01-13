@@ -6,7 +6,7 @@
 		</style>
 	</head>
 	<body>
-		<canvas id="canvas" width="600" height="600"></canvas>
+		<canvas id="canvas" width="600" height="500"></canvas>
 		
 		<script>
 			var game = {
@@ -74,6 +74,12 @@
 					game.snake.facing = result;
 					game.tick();
 				},
+				isEmpty: function(location) {
+					return game.board[location.y][location.x] == " ";
+				},
+				isWall: function(location) {
+					return game.board[location.y][location.x] == "#";
+				},
 				snake: {
 					parts: [
 						{x: 4, y: 2},
@@ -93,8 +99,10 @@
 					},
 					move: function() {
 						var location = game.snake.nextLocation();
-						game.snake.parts.unshift(location);
-						game.snake.parts.pop();
+						if (game.isEmpty(location)) {
+							game.snake.parts.unshift(location);
+							game.snake.parts.pop();
+						}
 					},
 					draw: function () {
 						game.snake.parts.forEach(part => {
