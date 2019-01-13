@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Paddles - reference</title>
+    </head>
+    <body>
+        <canvas id="board" width="800" height="500" />
+        <script>
+            var boardWidth = 800;
+            var boardHeight = 500;
+            var paddleWidth = 20;
+            var paddleHeight = 100;
+            class Paddle {
+                constructor(x, y, width, height) {
+                    this.x = x;
+                    this.y = y;
+                    this.width = width;
+                    this.height = height;
+                }
+
+                render(ctx) {
+                    ctx.fillStyle = "white";
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+
+                hasHitBall(ball) {
+                    return ball.x > this.x && ball.x < this.x + this.width;
+                }
+
+            }
+            class Speed {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                }
+            }
+            class Ball {
+                constructor (x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.radius = 3;
+                    this.speed = new Speed(2, 0);
+                }
+                render(ctx) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+                    ctx.fillStyle = "white";
+                    ctx.fill();
+                }
+                move() {
+                    this.x += this.speed.x;
+                    this.y += this.speed.y;
+                }
+                update(paddle1, paddle2) {
+
+                }
+            }
+            var board = document.getElementById("board");
+            var ctx = board.getContext("2d");
+            var player = new Paddle(5, 200, paddleWidth, paddleHeight);
+            var ai = new Paddle(boardWidth - paddleWidth - 5, 200, paddleWidth, paddleHeight);
+            var ball = new Ball(boardWidth / 2, boardHeight / 2, paddleWidth, paddleHeight);
+            function tick() {
+                draw();
+                window.setTimeout("tick()", 1000/60);
+            }
+            function update() {
+                ball.update();
+                // player.update();
+                // ai.update();    
+            }
+            function draw() {
+                update();
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, 800, 600);
+                player.render(ctx);
+                ai.render(ctx);
+                ball.render(ctx);
+            }
+            tick();
+        </script>
+    </body>
+</html>
