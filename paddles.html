@@ -6,10 +6,6 @@
     <body>
         <canvas id="board" width="800" height="500" />
         <script>
-            var boardWidth = 800;
-            var boardHeight = 500;
-            var paddleWidth = 20;
-            var paddleHeight = 100;
             class Paddle {
                 constructor(x, y, width, height) {
                     this.x = x;
@@ -33,13 +29,19 @@
                     this.x = x;
                     this.y = y;
                 }
+                reverseX() {
+                    this.x *= -1;
+                }
+                reverseY() {
+                    this.y *= -1;
+                }
             }
             class Ball {
                 constructor (x, y) {
                     this.x = x;
                     this.y = y;
                     this.radius = 3;
-                    this.speed = new Speed(2, 0);
+                    this.speed = new Speed(5, 0);
                 }
                 render(ctx) {
                     ctx.beginPath();
@@ -52,32 +54,55 @@
                     this.y += this.speed.y;
                 }
                 update(paddle1, paddle2) {
-
+                    if (paddle1.hasHitBall(this) || paddle2.hasHitBall(this)) {
+                        this.reverseX();
+                    }
+                    this.move();
+                }
+                reverseX() {
+                    this.speed.reverseX();
                 }
             }
+            class Game {
+                constructor(ctx) {
+                    this.ctx = ctx;
+
+                    this.width = 800;
+                    this.height = 500;
+                    this.paddleWidth = 20;
+                    this.paddleHeight = 100;
+
+                    this.player = new Paddle(5, 200, this.paddleWidth, this.paddleHeight);
+                    this.ai = new Paddle(this.width - this.paddleWidth - 5, 200, this.paddleWidth, this.paddleHeight);
+                    this.ball = new Ball(this.width / 2, this.height / 2, this.paddleWidth, this.paddleHeight);
+                }
+
+                tick() {
+                    this.update();
+                    this.draw();
+                    window.setTimeout("game.tick()", 1000/60);
+                }
+                update() {
+                    this.ball.update(this.player, this.ai);
+                    // player.update();
+                    // ai.update();    
+                }
+                draw() {
+                    this.ctx.fillStyle = "black";
+                    this.ctx.fillRect(0, 0, 800, 600);
+                    this.player.render(ctx);
+                    this.ai.render(ctx);
+                    this.ball.render(ctx);
+                }
+                start() {
+                    this.tick();
+                }
+            }
+
             var board = document.getElementById("board");
             var ctx = board.getContext("2d");
-            var player = new Paddle(5, 200, paddleWidth, paddleHeight);
-            var ai = new Paddle(boardWidth - paddleWidth - 5, 200, paddleWidth, paddleHeight);
-            var ball = new Ball(boardWidth / 2, boardHeight / 2, paddleWidth, paddleHeight);
-            function tick() {
-                draw();
-                window.setTimeout("tick()", 1000/60);
-            }
-            function update() {
-                ball.update();
-                // player.update();
-                // ai.update();    
-            }
-            function draw() {
-                update();
-                ctx.fillStyle = "black";
-                ctx.fillRect(0, 0, 800, 600);
-                player.render(ctx);
-                ai.render(ctx);
-                ball.render(ctx);
-            }
-            tick();
+            var game = new Game(ctx);
+            game.start();
         </script>
     </body>
 </html>
