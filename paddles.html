@@ -24,13 +24,15 @@
                     return ball.x > this.x && ball.x < this.x + this.width && ball.y > this.y && ball.y < this.y + this.height;
                 }
 
-                moveUp() {
-                    if (this.y > this.speed) {
+                moveUp(minY) {
+                    if (this.y > minY + this.speed) {
                         this.y -= this.speed;
                     }
                 }
-                moveDown() {
-                    this.y += this.speed;
+                moveDown(maxY) {
+                    if (this.y < maxY - this.speed - this.height) {
+                        this.y += this.speed;
+                    }
                 }
             }
             class Keys {
@@ -57,11 +59,11 @@
                 constructor(paddle) {
                     this.paddle = paddle;
                 }
-                update(keys) {
+                update(keys, minY, maxY) {
                     if (keys.down) {
-                        this.paddle.moveDown();
+                        this.paddle.moveDown(maxY);
                     } else if (keys.up) {
-                        this.paddle.moveUp();
+                        this.paddle.moveUp(minY);
                     }
                 }
                 hasHitBall(ball) {
@@ -133,12 +135,12 @@
                 }
                 update() {
                     this.ball.update(this.player, this.ai);
-                    this.player.update(this.keys);
+                    this.player.update(this.keys, 0, this.height);
                     // ai.update();    
                 }
                 draw() {
                     this.ctx.fillStyle = "black";
-                    this.ctx.fillRect(0, 0, 800, 600);
+                    this.ctx.fillRect(0, 0, this.width, this.height);
                     this.player.render(ctx);
                     this.ai.render(ctx);
                     this.ball.render(ctx);
