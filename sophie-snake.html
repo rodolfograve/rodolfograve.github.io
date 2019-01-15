@@ -56,9 +56,14 @@
 				tick: function() {
 					window.clearTimeout(game.timer);
 					game.tickNumber++;
-					game.snake.move();
-					game.draw();
-					game.timer = window.setTimeout("game.tick()", 500);
+					var result = game.snake.move();
+					if (result == "over") {
+						alert("You lose");
+					}
+					else {
+						game.draw();
+						game.timer = window.setTimeout("game.tick()", 500);
+					}
 				},
 				start: function() {
 					window.addEventListener("keydown", game.processInput, false);
@@ -102,6 +107,9 @@
 						if (game.isEmpty(location)) {
 							game.snake.parts.unshift(location);
 							game.snake.parts.pop();
+						}
+						else if (game.isWall(location)) {
+							return "over";
 						}
 					},
 					draw: function () {
