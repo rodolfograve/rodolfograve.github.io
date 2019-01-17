@@ -30,6 +30,11 @@
 					"#             #",
 					"###############"
 					],
+				fruits: [
+					{x:6,y:2},
+					{x:1,y:10},
+					{x:8,y:10},
+				],
 				squareSize: 30,
 				drawBoard: function () {
 					var currentYoffset = 0;
@@ -46,9 +51,18 @@
 						currentYoffset += game.squareSize;
 					});
 				},
+				drawFruits: function (){
+					game.fruits.forEach((part)=>{
+						var partXLocation = part.x * game.squareSize;
+						var partYLocation = part.y * game.squareSize;
+						game.ctx.fillStyle = "red";
+						game.ctx.fillRect(partXLocation, partYLocation, game.squareSize, game.squareSize);
+					});
+				},
 				draw: function () {
 					game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
 					game.drawBoard();
+					game.drawFruits();
 					game.snake.draw();
 				},
 				tickNumber: 0,
@@ -85,6 +99,15 @@
 				isWall: function(location) {
 					return game.board[location.y][location.x] == "#";
 				},
+				isFruit: function(location){
+					for(var i = 0; i < game.fruits.length; i++) {
+						var fruit = game.fruits[i];
+						if(location.x == fruit.x && location.y == fruit.y) {
+							return i;
+						}
+					}
+					return -1;
+				},
 				snake: {
 					parts: [
 						{x: 4, y: 2},
@@ -104,12 +127,17 @@
 					},
 					move: function() {
 						var location = game.snake.nextLocation();
-						if (game.isEmpty(location)) {
+						var fruitIndex = game.isFruit(location);
+						if (fruitIndex >= 0) {
+							game.fruits.splice(fruitIndex, 1);
 							game.snake.parts.unshift(location);
-							game.snake.parts.pop();
 						}
 						else if (game.isWall(location)) {
 							return "over";
+						}
+						else if (game.isEmpty(location)) {
+							game.snake.parts.unshift(location);
+							game.snake.parts.pop();
 						}
 					},
 					draw: function () {
