@@ -161,12 +161,21 @@
 						}
 					},
 					draw: function () {
-						game.snake.parts.forEach(part => {
+						for (var i = 0; i < game.snake.parts.length; i++) {
+							var part = game.snake.parts[i];
 							const partXlocation = part.x * game.squareSize;
 							const partYlocation = part.y * game.squareSize;
-							game.ctx.fillStyle = "green";
+							if (i == 0){
+								game.ctx.fillStyle = "pink";
+							}
+							else if (i == game.snake.parts.length - 1) {
+								game.ctx.fillStyle = "brown";
+							}
+							else {
+								game.ctx.fillStyle = "green";
+							}
 							game.ctx.fillRect(partXlocation, partYlocation, game.squareSize, game.squareSize);
-						});
+						}
 					}
 				},
 			}
