@@ -69,19 +69,24 @@
 				},
 				tickNumber: 0,
 				timer: null,
+				isOver: false,
 				tick: function() {
 					window.clearTimeout(game.timer);
-					game.tickNumber++;
-					if (game.tickNumber % 10 == 0) {
-						game.addRandomFruit();
-					}
-					var result = game.snake.move();
-					if (result == "over") {
-						alert("You lose");
-					}
-					else {
-						game.draw();
-						game.timer = window.setTimeout("game.tick()", 300);
+					if (!game.isOver) {
+						game.tickNumber++;
+						if (game.tickNumber % 10 == 0) {
+							game.addRandomFruit();
+						}
+						var result = game.snake.move();
+						if (result == "over") {
+							game.isOver = true;
+							alert("You lose");
+							location.reload();
+						}
+						else {
+							game.draw();
+							game.timer = window.setTimeout("game.tick()", 300);
+						}
 					}
 				},
 				start: function() {
