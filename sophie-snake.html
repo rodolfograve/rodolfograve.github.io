@@ -6,12 +6,14 @@
 		</style>
 	</head>
 	<body>
+		<div>Score <span id="scoreSpan" /></div>
 		<canvas id="canvas" width="600" height="500"></canvas>
 		
 		<script>
 			var game = {
 				canvas: document.getElementById("canvas"),
 				ctx: canvas.getContext("2d"),
+				score: 0,
 				board: [
 					"###############",
 					"#             #",
@@ -70,13 +72,16 @@
 				tick: function() {
 					window.clearTimeout(game.timer);
 					game.tickNumber++;
+					if (game.tickNumber % 10 == 0) {
+						game.addRandomFruit();
+					}
 					var result = game.snake.move();
 					if (result == "over") {
 						alert("You lose");
 					}
 					else {
 						game.draw();
-						game.timer = window.setTimeout("game.tick()", 500);
+						game.timer = window.setTimeout("game.tick()", 300);
 					}
 				},
 				start: function() {
@@ -108,6 +113,14 @@
 					}
 					return -1;
 				},
+				addRandomFruit: function() {
+					var y = Math.floor(Math.random() * game.board.length);
+					var x = Math.floor(Math.random() * game.board[y].length);
+					var location = {x: x, y: y};
+					if (game.isEmpty(location)) {
+						game.fruits.push(location);
+					}
+				},
 				snake: {
 					parts: [
 						{x: 4, y: 2},
@@ -129,8 +142,10 @@
 						var location = game.snake.nextLocation();
 						var fruitIndex = game.isFruit(location);
 						if (fruitIndex >= 0) {
+							game.score++;
 							game.fruits.splice(fruitIndex, 1);
 							game.snake.parts.unshift(location);
+							document.getElementById("scoreSpan").innerText = game.score;
 						}
 						else if (game.isWall(location)) {
 							return "over";
