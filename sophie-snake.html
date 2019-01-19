@@ -118,6 +118,15 @@
 					}
 					return -1;
 				},
+				isSnake: function(location) {
+					for(var i = 0; i < game.snake.parts.length; i++) {
+						var part = game.snake.parts[i];
+						if(location.x == part.x && location.y == part.y) {
+							return true;
+						}
+					}
+					return false;
+				},
 				addRandomFruit: function() {
 					var y = Math.floor(Math.random() * game.board.length);
 					var x = Math.floor(Math.random() * game.board[y].length);
@@ -155,6 +164,9 @@
 						else if (game.isWall(location)) {
 							return "over";
 						}
+						else if (game.isSnake(location)) {
+							return "over";
+						}
 						else if (game.isEmpty(location)) {
 							game.snake.parts.unshift(location);
 							game.snake.parts.pop();
@@ -165,7 +177,7 @@
 							var part = game.snake.parts[i];
 							const partXlocation = part.x * game.squareSize;
 							const partYlocation = part.y * game.squareSize;
-							if (i == 0){
+							if (i == 0) {
 								game.ctx.fillStyle = "pink";
 							}
 							else if (i == game.snake.parts.length - 1) {
