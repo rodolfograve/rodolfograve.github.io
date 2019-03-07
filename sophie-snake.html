@@ -6,7 +6,7 @@
 		</style>
 	</head>
 	<body>
-		<div>Score <span id="scoreSpan" /></div>
+		<div>Score <span id="scoreSpan"></span>, Speed <span id="speedSpan"></span> moves/s </div>
 		<canvas id="canvas" width="600" height="500"></canvas>
 		
 		<script>
@@ -68,6 +68,8 @@
 					game.snake.draw();
 				},
 				tickNumber: 0,
+				speedFactor: 1,
+				movesPerSecond: 2.5,
 				timer: null,
 				isOver: false,
 				tick: function() {
@@ -78,14 +80,14 @@
 							game.addRandomFruit();
 						}
 						var result = game.snake.move();
+						game.draw();
 						if (result == "over") {
 							game.isOver = true;
 							alert("You lose");
 							location.reload();
 						}
 						else {
-							game.draw();
-							game.timer = window.setTimeout("game.tick()", 300);
+							game.timer = window.setTimeout("game.tick()", 1000 / game.movesPerSecond);
 						}
 					}
 				},
@@ -101,7 +103,6 @@
 					if (key == '39') result = "E";
 					if (key == '40') result = "S";
 					game.snake.facing = result;
-					game.tick();
 				},
 				isEmpty: function(location) {
 					return game.board[location.y][location.x] == " ";
@@ -160,6 +161,11 @@
 							game.fruits.splice(fruitIndex, 1);
 							game.snake.parts.unshift(location);
 							document.getElementById("scoreSpan").innerText = game.score;
+							if (game.movesPerSecond < 6) {
+								game.speedFactor *= 1.03;
+								game.movesPerSecond *= game.speedFactor;
+								document.getElementById("speedSpan").innerText = game.movesPerSecond.toFixed(2);
+							}
 						}
 						else if (game.isWall(location)) {
 							return "over";
