@@ -34,7 +34,7 @@
         <input type="submit" class="submitButton" value="Submit Consent">
     </form>
 
-    <span id="encodedFormSpan"></span>
+    <textarea id="encodedFormOutput" cols="200" rows="5"></textarea>
     
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
     <script>
@@ -47,8 +47,8 @@
                 "phone": getValue("phone"),
                 "signatureDataUrl": signatureDataUrl,
             };
-            const encodedFormSpan = document.getElementById("encodedFormSpan");
-            encodedFormSpan.innerText = JSON.stringify(encodedFormObj);
+            const encodedFormOutput = document.getElementById("encodedFormOutput");
+            encodedFormOutput.value = JSON.stringify(encodedFormObj);
             return false;
         }
 
