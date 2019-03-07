@@ -1,0 +1,36 @@
+.h2{
+    line-height: 1.3em;
+    color: #4a4a4a;
+    font-family: 'Open Sans', sans-serif;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+
+.textArea{
+    outline: none;
+    border: 1px solid #dcdddf;
+    color: #878b91;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 16px;
+    height: 16px;
+    margin: 0;
+    background: none;
+    padding: 8px 15px 7px;
+    width: 268px;
+    display: inline-block;}
+
+    .submitButton{
+            background: url(images/button.gif) repeat-x scroll 0 0 #218DE3;
+            color: #FFFFFF;
+            display: inline-block;
+            font-family: 'Open Sans',sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: -1px;
+            line-height: 20px;
+            padding: 8px 18px;
+            text-transform: uppercase;
+    }

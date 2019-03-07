@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPS</title>
+    <link href="index.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <img src="images\logoCP.png" alt="Feet By Pody">
+    <form id="consentForm" class="consentForm" onsubmit="return onSubmit()">
+        <input type="text" id="encodedForm" />
+        <input type="submit">
+    </form>
+    <h2 class="h2">Patient Consent Form</h2>
+    <div id="name">still empty</div>
+    <div id="email">still empty</div>
+    <div id="phone">still empty</div>
+    <canvas id="signatureCopyCanvas" width="600" height="120" style="touch-action: none"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+    <script>
+        var signatureCopyPad = new SignaturePad(document.getElementById("signatureCopyCanvas"));
+        function onSubmit() {
+            const encodedFormText = document.getElementById("encodedForm").value;
+            const encodedFormObj = JSON.parse(encodedFormText);
+            setValue("name", encodedFormObj);
+            setValue("email", encodedFormObj);
+            setValue("phone", encodedFormObj);
+            signatureCopyPad.fromDataURL(encodedFormObj.signatureDataUrl);
+            return false;
+        }
+
+        function setValue(key, obj) {
+            document.getElementById(key).innerHTML = obj[key];
+        }
+    </script>
+</body>
+
+</html>

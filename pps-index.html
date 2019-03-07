@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPS</title>
+    <link href="index.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <img src="images\logoCP.png" alt="Feet By Pody">
+    <form id="consentForm" class="consentForm" onsubmit="return onSubmit()">
+        <h2 class="h2">Patient Consent Form</h2>
+        <label class="consentFormLabel">
+            <input type="text" class="textArea" id="name" maxlength="50" placeholder="Name">
+        </label>
+        <br>
+        <br>
+        <label class="consentFormLabel">
+            <input type="text" class="textArea" id="email" maxlength="50" placeholder="Email">
+        </label>
+
+        <br>
+        <br>
+        <label class="consentFormLabel">
+            <input type="text" class="textArea" id="phone" maxlength="50" placeholder="Phone Number">
+        </label>
+        <br>
+        <br>
+        <canvas id="signatureCanvas" width="600" height="120" style="touch-action: none"></canvas>
+        <br>
+        <br>
+        <input type="submit" class="submitButton" value="Submit Consent">
+    </form>
+
+    <span id="encodedFormSpan"></span>
+    
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+    <script>
+        var signaturePad = new SignaturePad(document.getElementById("signatureCanvas"));
+        function onSubmit() {
+            const signatureDataUrl = signaturePad.toDataURL("image/svg+xml");
+            const encodedFormObj = {
+                "name": getValue("name"),
+                "email": getValue("email"),
+                "phone": getValue("phone"),
+                "signatureDataUrl": signatureDataUrl,
+            };
+            const encodedFormSpan = document.getElementById("encodedFormSpan");
+            encodedFormSpan.innerText = JSON.stringify(encodedFormObj);
+            return false;
+        }
+
+        function getValue(name) {
+            return document.getElementById(name).value;
+        }
+    </script>
+</body>
+
+</html>
